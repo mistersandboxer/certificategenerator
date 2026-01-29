@@ -43,13 +43,6 @@
     margin-top: 4px;
   }
 
-  .privacy {
-    margin-top: 16px;
-    font-size: 13px;
-    color: #555;
-    font-style: italic;
-  }
-
   .attest {
     margin-top: 18px;
     font-size: 14px;
@@ -58,6 +51,13 @@
   .attest input {
     width: auto;
     margin-right: 8px;
+  }
+
+  .privacy {
+    margin-top: 16px;
+    font-size: 13px;
+    color: #555;
+    font-style: italic;
   }
 
   .buttons {
@@ -72,11 +72,6 @@
     color: #fff;
     border: none;
     cursor: pointer;
-    margin-right: 10px;
-  }
-
-  button.secondary {
-    background: #555;
   }
 
   button:hover {
@@ -192,7 +187,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
     font-size: 16px;
     color: #555;
   }
@@ -209,8 +203,28 @@
     color: #0b5fa5;
   }
 
+  /* ---------- FLOATING PDF BUTTON ---------- */
+  .pdf-bar {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+    z-index: 999;
+  }
+
+  .pdf-bar button {
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    background: #0b5fa5;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  }
+
   @media print {
-    .form-wrap { display: none; }
+    .form-wrap, .pdf-bar { display: none; }
     .page { display: block; }
   }
 </style>
@@ -251,7 +265,6 @@
 
   <div class="buttons">
     <button onclick="generate()">Generate Certificate</button>
-    <button class="secondary" onclick="printCert()">Save as PDF</button>
   </div>
 </div>
 
@@ -285,6 +298,10 @@
   </div>
 </div>
 
+<div class="pdf-bar" id="pdfBar">
+  <button onclick="printCert()">Save as PDF</button>
+</div>
+
 <script>
 function generate() {
   const first = document.getElementById('firstName').value.trim();
@@ -298,24 +315,23 @@ function generate() {
     return;
   }
 
-  const fullName = [first, middle, last].filter(Boolean).join(' ');
-  document.getElementById('displayName').textContent = fullName;
+  document.getElementById('displayName').textContent =
+    [first, middle, last].filter(Boolean).join(' ');
   document.getElementById('displayCourse').textContent = course;
 
-  const d = new Date();
   document.getElementById('today').textContent =
-    d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    new Date().toLocaleDateString('en-US', {
+      month: 'long', day: 'numeric', year: 'numeric'
+    });
 
   document.getElementById('certPage').style.display = 'block';
   document.querySelector('.form-wrap').style.display = 'none';
-  window.scrollTo(0, document.body.scrollHeight);
+  document.getElementById('pdfBar').style.display = 'block';
+
+  window.scrollTo(0, 0);
 }
 
 function printCert() {
-  if (document.getElementById('certPage').style.display !== 'block') {
-    alert('Please generate the certificate first.');
-    return;
-  }
   window.print();
 }
 </script>
