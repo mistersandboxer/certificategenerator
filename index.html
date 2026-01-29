@@ -16,7 +16,6 @@
     font-family: Arial, Helvetica, sans-serif;
   }
 
-  /* ---------- INPUT FORM ---------- */
   .form-wrap {
     max-width: 720px;
     margin: 40px auto;
@@ -60,7 +59,6 @@
 
   button:hover { opacity: 0.9; }
 
-  /* ---------- CERTIFICATE ---------- */
   .page {
     width: 11in;
     height: 8.5in;
@@ -142,7 +140,6 @@
 
   .org { font-weight: bold; color: #0b5fa5; }
 
-  /* ---------- FLOATING PDF BUTTON ---------- */
   .pdf-bar {
     position: fixed;
     bottom: 20px;
@@ -171,7 +168,7 @@
 
 <body>
 
-<div class="form-wrap">
+<div class="form-wrap" id="formWrap">
   <h2>Certificate Generator</h2>
 
   <label>First Name</label>
@@ -184,7 +181,7 @@
   <input id="lastName">
 
   <label>Course</label>
-  <select id="course">
+  <select id="courseSelect">
     <option value="">Select a course</option>
     <option>Webinar 1</option>
     <option>Webinar 2</option>
@@ -192,7 +189,7 @@
 
   <div class="attest">
     <label style="font-weight: normal;">
-      <input type="checkbox" id="attest">
+      <input type="checkbox" id="attestCheck">
       I confirm that I personally completed the selected course in its entirety.
     </label>
   </div>
@@ -202,7 +199,7 @@
   </div>
 
   <div class="buttons">
-    <button onclick="generate()">Generate Certificate</button>
+    <button type="button" onclick="generate()">Generate Certificate</button>
   </div>
 </div>
 
@@ -230,55 +227,59 @@
 </div>
 
 <div class="pdf-bar" id="pdfBar">
-  <button onclick="printCert()">Save as PDF</button>
+  <button type="button" onclick="printCert()">Save as PDF</button>
 </div>
 
 <script>
-function showCertificate(name, course, dateStr) {
-  document.getElementById("displayName").textContent = name;
-  document.getElementById("displayCourse").textContent = course;
+function showCertificate(fullName, courseName, completionDate) {
+  document.getElementById("displayName").textContent = fullName;
+  document.getElementById("displayCourse").textContent = courseName;
 
-  const d = dateStr ? new Date(dateStr) : new Date();
+  const d = completionDate ? new Date(completionDate) : new Date();
   document.getElementById("today").textContent =
     d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 
   document.getElementById("certPage").style.display = "block";
-  document.querySelector(".form-wrap").style.display = "none";
+  document.getElementById("formWrap").style.display = "none";
   document.getElementById("pdfBar").style.display = "block";
   window.scrollTo(0, 0);
 }
 
 function generate() {
-  const first = firstName.value.trim();
-  const middle = middleName.value.trim();
-  const last = lastName.value.trim();
-  const course = course.value;
-  const attest = attest.checked;
+  const first = document.getElementById("firstName").value.trim();
+  const middle = document.getElementById("middleName").value.trim();
+  const last = document.getElementById("lastName").value.trim();
+  const course = document.getElementById("courseSelect").value;
+  const attest = document.getElementById("attestCheck").checked;
 
   if (!first || !last || !course || !attest) {
-    alert("Complete all fields and confirm.");
+    alert("Please complete all required fields and confirm the statement.");
     return;
   }
 
-  showCertificate([first, middle, last].filter(Boolean).join(" "), course);
+  const fullName = [first, middle, last].filter(Boolean).join(" ");
+  showCertificate(fullName, course, null);
 }
 
 function printCert() {
-  const course = displayCourse.textContent || "Course";
-  const date = new Date().toISOString().slice(0,10);
-  document.title = `Certificate_${course.replace(/[^a-z0-9]/gi,"_")}_${date}`;
+  const course = document.getElementById("displayCourse").textContent || "Course";
+  const date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const safeCourse = course.replace(/[^a-z0-9]/gi, "_");
+  document.title = `Certificate_${safeCourse}_${date}`;
   window.print();
 }
 
-/* ---------- URL PARAM MODE ---------- */
-const params = new URLSearchParams(window.location.search);
-if (params.get("fullName") && params.get("courseName")) {
-  showCertificate(
-    params.get("fullName"),
-    params.get("courseName"),
-    params.get("completionDate")
-  );
-}
+/* URL param mode: ?fullName=...&courseName=...&completionDate=YYYY-MM-DD */
+(function initFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const fullName = params.get("fullName");
+  const courseName = params.get("courseName");
+  const completionDate = params.get("completionDate");
+
+  if (fullName && courseName) {
+    showCertificate(fullName, courseName, completionDate);
+  }
+})();
 </script>
 
 </body>
