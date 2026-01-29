@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Certificate Generator</title>
+<title>Certificate</title>
 
 <style>
   @page { size: landscape; margin: 0; }
@@ -319,10 +319,9 @@ function generate() {
     [first, middle, last].filter(Boolean).join(' ');
   document.getElementById('displayCourse').textContent = course;
 
+  const today = new Date();
   document.getElementById('today').textContent =
-    new Date().toLocaleDateString('en-US', {
-      month: 'long', day: 'numeric', year: 'numeric'
-    });
+    today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
   document.getElementById('certPage').style.display = 'block';
   document.querySelector('.form-wrap').style.display = 'none';
@@ -332,6 +331,13 @@ function generate() {
 }
 
 function printCert() {
+  const course = document.getElementById('displayCourse').textContent || 'Course';
+  const date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+
+  const safeCourse = course.replace(/[^a-z0-9]/gi, '_');
+
+  document.title = `Certificate_${safeCourse}_${date}`;
+
   window.print();
 }
 </script>
