@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Certificate Generator</title>
+
+<style>
+  @page { size: landscape; margin: 0; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 11in;
+    height: 8.5in;
+    background: #f4f6f8;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  /* ---------- INPUT FORM ---------- */
+  .form-wrap {
+    max-width: 720px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 30px;
+    border: 1px solid #ddd;
+  }
+
+  .form-wrap h2 {
+    margin-top: 0;
+    color: #0b5fa5;
+  }
+
+  label {
+    display: block;
+    margin-top: 14px;
+    font-weight: bold;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+
+  .privacy {
+    margin-top: 16px;
+    font-size: 13px;
+    color: #555;
+    font-style: italic;
+  }
+
+  button {
+    margin-top: 20px;
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: bold;
+    background: #0b5fa5;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #094f89;
+  }
+
+  /* ---------- CERTIFICATE ---------- */
+  .page {
+    width: 11in;
+    height: 8.5in;
+    padding: 42px;
+    box-sizing: border-box;
+    display: none;
+  }
+
+  .certificate {
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    position: relative;
+    text-align: center;
+    border: 10px solid #0b5fa5;
+    outline: 3px solid #d7e6f7;
+    outline-offset: -22px;
+    padding: 48px 70px;
+    box-sizing: border-box;
+  }
+
+  .seal {
+    position: absolute;
+    right: 52px;
+    top: 52px;
+    width: 120px;
+    height: 120px;
+    border-radius: 999px;
+    border: 3px solid rgba(11,95,165,0.35);
+    background: rgba(11,95,165,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(-10deg);
+  }
+
+  .seal span {
+    font-family: Georgia, serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: rgba(11,95,165,0.65);
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  .content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .title {
+    font-family: Georgia, serif;
+    font-size: 54px;
+    color: #0b5fa5;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    letter-spacing: 4px;
+    color: #556;
+    margin-bottom: 24px;
+  }
+
+  .divider {
+    width: 70%;
+    height: 1px;
+    background: #d7e6f7;
+    margin-bottom: 26px;
+  }
+
+  .name {
+    font-family: Georgia, serif;
+    font-size: 44px;
+    font-weight: bold;
+    margin-bottom: 18px;
+  }
+
+  .text {
+    font-size: 20px;
+    margin-bottom: 14px;
+  }
+
+  .course {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 22px;
+  }
+
+  .congrats {
+    font-size: 16px;
+    color: #555;
+    max-width: 78%;
+    line-height: 1.5;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 52px;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    color: #555;
+  }
+
+  .sigline {
+    width: 320px;
+    height: 1px;
+    background: #c9d9ef;
+    margin: 14px auto 8px auto;
+  }
+
+  .org {
+    font-weight: bold;
+    color: #0b5fa5;
+  }
+
+  @media print {
+    .form-wrap { display: none; }
+    .page { display: block; }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="form-wrap">
+  <h2>Certificate Generator</h2>
+
+  <label>First Name</label>
+  <input id="firstName">
+
+  <label>Middle Name</label>
+  <input id="middleName">
+
+  <label>Last Name</label>
+  <input id="lastName">
+
+  <label>Course</label>
+  <select id="course">
+    <option value="">Select a course</option>
+    <option>Webinar 1</option>
+    <option>Webinar 2</option>
+  </select>
+
+  <div class="privacy">
+    This page does not collect, store, or transmit any personal information.
+    All data remains in your browser only.
+  </div>
+
+  <button onclick="generate()">Generate Certificate</button>
+</div>
+
+<div class="page" id="certPage">
+  <div class="certificate">
+
+    <div class="seal"><span>YOU<br>DID IT!</span></div>
+
+    <div class="content">
+      <div class="title">Certificate of Completion</div>
+      <div class="subtitle">AWARDED TO</div>
+      <div class="divider"></div>
+
+      <div class="name" id="displayName"></div>
+
+      <div class="text">For successful completion of</div>
+
+      <div class="course" id="displayCourse"></div>
+
+      <div class="congrats">
+        In recognition of your dedication to professional development and continued learning.
+      </div>
+    </div>
+
+    <div class="footer">
+      Issued on <span id="today"></span>
+      <div class="sigline"></div>
+      <div class="org">The Institute of Internal Auditors</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function generate() {
+  const first = document.getElementById('firstName').value.trim();
+  const middle = document.getElementById('middleName').value.trim();
+  const last = document.getElementById('lastName').value.trim();
+  const course = document.getElementById('course').value;
+
+  if (!first || !last || !course) {
+    alert('Please complete required fields.');
+    return;
+  }
+
+  const fullName = [first, middle, last].filter(Boolean).join(' ');
+  document.getElementById('displayName').textContent = fullName;
+  document.getElementById('displayCourse').textContent = course;
+
+  const d = new Date();
+  const formatted = d.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+  });
+  document.getElementById('today').textContent = formatted;
+
+  document.getElementById('certPage').style.display = 'block';
+  window.scrollTo(0, document.body.scrollHeight);
+}
+</script>
+
+</body>
+</html>
