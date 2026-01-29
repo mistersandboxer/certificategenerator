@@ -50,8 +50,21 @@
     font-style: italic;
   }
 
-  button {
+  .attest {
+    margin-top: 18px;
+    font-size: 14px;
+  }
+
+  .attest input {
+    width: auto;
+    margin-right: 8px;
+  }
+
+  .buttons {
     margin-top: 20px;
+  }
+
+  button {
     padding: 10px 24px;
     font-size: 14px;
     font-weight: bold;
@@ -59,10 +72,15 @@
     color: #fff;
     border: none;
     cursor: pointer;
+    margin-right: 10px;
+  }
+
+  button.secondary {
+    background: #555;
   }
 
   button:hover {
-    background: #094f89;
+    opacity: 0.9;
   }
 
   /* ---------- CERTIFICATE ---------- */
@@ -169,7 +187,11 @@
   .footer {
     position: absolute;
     bottom: 52px;
+    left: 0;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     font-size: 16px;
     color: #555;
@@ -215,12 +237,22 @@
     <option>Webinar 2</option>
   </select>
 
+  <div class="attest">
+    <label style="font-weight: normal;">
+      <input type="checkbox" id="attest">
+      I confirm that I personally completed the selected course in its entirety and that this certificate is accurate.
+    </label>
+  </div>
+
   <div class="privacy">
-    This page does not collect, store, or transmit any personal information.
+    This page does not collect, store, or transmit personal information.
     All data remains in your browser only.
   </div>
 
-  <button onclick="generate()">Generate Certificate</button>
+  <div class="buttons">
+    <button onclick="generate()">Generate Certificate</button>
+    <button class="secondary" onclick="printCert()">Save as PDF</button>
+  </div>
 </div>
 
 <div class="page" id="certPage">
@@ -259,9 +291,10 @@ function generate() {
   const middle = document.getElementById('middleName').value.trim();
   const last = document.getElementById('lastName').value.trim();
   const course = document.getElementById('course').value;
+  const attest = document.getElementById('attest').checked;
 
-  if (!first || !last || !course) {
-    alert('Please complete required fields.');
+  if (!first || !last || !course || !attest) {
+    alert('Please complete all required fields and confirm the statement.');
     return;
   }
 
@@ -270,15 +303,20 @@ function generate() {
   document.getElementById('displayCourse').textContent = course;
 
   const d = new Date();
-  const formatted = d.toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric'
-  });
-  document.getElementById('today').textContent = formatted;
+  document.getElementById('today').textContent =
+    d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
   document.getElementById('certPage').style.display = 'block';
+  document.querySelector('.form-wrap').style.display = 'none';
   window.scrollTo(0, document.body.scrollHeight);
+}
+
+function printCert() {
+  if (document.getElementById('certPage').style.display !== 'block') {
+    alert('Please generate the certificate first.');
+    return;
+  }
+  window.print();
 }
 </script>
 
