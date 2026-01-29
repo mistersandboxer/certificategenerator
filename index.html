@@ -25,16 +25,9 @@
     border: 1px solid #ddd;
   }
 
-  .form-wrap h2 {
-    margin-top: 0;
-    color: #0b5fa5;
-  }
+  .form-wrap h2 { margin-top: 0; color: #0b5fa5; }
 
-  label {
-    display: block;
-    margin-top: 14px;
-    font-weight: bold;
-  }
+  label { display: block; margin-top: 14px; font-weight: bold; }
 
   input, select {
     width: 100%;
@@ -43,15 +36,8 @@
     margin-top: 4px;
   }
 
-  .attest {
-    margin-top: 18px;
-    font-size: 14px;
-  }
-
-  .attest input {
-    width: auto;
-    margin-right: 8px;
-  }
+  .attest { margin-top: 18px; font-size: 14px; }
+  .attest input { width: auto; margin-right: 8px; }
 
   .privacy {
     margin-top: 16px;
@@ -60,9 +46,7 @@
     font-style: italic;
   }
 
-  .buttons {
-    margin-top: 20px;
-  }
+  .buttons { margin-top: 20px; }
 
   button {
     padding: 10px 24px;
@@ -74,9 +58,7 @@
     cursor: pointer;
   }
 
-  button:hover {
-    opacity: 0.9;
-  }
+  button:hover { opacity: 0.9; }
 
   /* ---------- CERTIFICATE ---------- */
   .page {
@@ -133,61 +115,21 @@
     align-items: center;
   }
 
-  .title {
-    font-family: Georgia, serif;
-    font-size: 54px;
-    color: #0b5fa5;
-    margin-bottom: 10px;
-  }
-
-  .subtitle {
-    font-size: 15px;
-    letter-spacing: 4px;
-    color: #556;
-    margin-bottom: 24px;
-  }
-
-  .divider {
-    width: 70%;
-    height: 1px;
-    background: #d7e6f7;
-    margin-bottom: 26px;
-  }
-
-  .name {
-    font-family: Georgia, serif;
-    font-size: 44px;
-    font-weight: bold;
-    margin-bottom: 18px;
-  }
-
-  .text {
-    font-size: 20px;
-    margin-bottom: 14px;
-  }
-
-  .course {
-    font-size: 26px;
-    font-weight: bold;
-    margin-bottom: 22px;
-  }
-
-  .congrats {
-    font-size: 16px;
-    color: #555;
-    max-width: 78%;
-    line-height: 1.5;
-  }
+  .title { font-family: Georgia, serif; font-size: 54px; color: #0b5fa5; }
+  .subtitle { font-size: 15px; letter-spacing: 4px; color: #556; margin-bottom: 24px; }
+  .divider { width: 70%; height: 1px; background: #d7e6f7; margin-bottom: 26px; }
+  .name { font-family: Georgia, serif; font-size: 44px; font-weight: bold; margin-bottom: 18px; }
+  .text { font-size: 20px; margin-bottom: 14px; }
+  .course { font-size: 26px; font-weight: bold; margin-bottom: 22px; }
+  .congrats { font-size: 16px; color: #555; max-width: 78%; }
 
   .footer {
     position: absolute;
     bottom: 52px;
-    left: 0;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 16px;
     color: #555;
   }
 
@@ -198,10 +140,7 @@
     margin: 14px auto 8px auto;
   }
 
-  .org {
-    font-weight: bold;
-    color: #0b5fa5;
-  }
+  .org { font-weight: bold; color: #0b5fa5; }
 
   /* ---------- FLOATING PDF BUTTON ---------- */
   .pdf-bar {
@@ -254,13 +193,12 @@
   <div class="attest">
     <label style="font-weight: normal;">
       <input type="checkbox" id="attest">
-      I confirm that I personally completed the selected course in its entirety and that this certificate is accurate.
+      I confirm that I personally completed the selected course in its entirety.
     </label>
   </div>
 
   <div class="privacy">
-    This page does not collect, store, or transmit personal information.
-    All data remains in your browser only.
+    This page does not collect or store personal data.
   </div>
 
   <div class="buttons">
@@ -270,7 +208,6 @@
 
 <div class="page" id="certPage">
   <div class="certificate">
-
     <div class="seal"><span>YOU<br>DID IT!</span></div>
 
     <div class="content">
@@ -279,14 +216,9 @@
       <div class="divider"></div>
 
       <div class="name" id="displayName"></div>
-
       <div class="text">For successful completion of</div>
-
       <div class="course" id="displayCourse"></div>
-
-      <div class="congrats">
-        In recognition of your dedication to professional development and continued learning.
-      </div>
+      <div class="congrats">In recognition of your dedication to learning.</div>
     </div>
 
     <div class="footer">
@@ -294,7 +226,6 @@
       <div class="sigline"></div>
       <div class="org">The Institute of Internal Auditors</div>
     </div>
-
   </div>
 </div>
 
@@ -303,42 +234,50 @@
 </div>
 
 <script>
-function generate() {
-  const first = document.getElementById('firstName').value.trim();
-  const middle = document.getElementById('middleName').value.trim();
-  const last = document.getElementById('lastName').value.trim();
-  const course = document.getElementById('course').value;
-  const attest = document.getElementById('attest').checked;
+function showCertificate(name, course, dateStr) {
+  document.getElementById("displayName").textContent = name;
+  document.getElementById("displayCourse").textContent = course;
 
-  if (!first || !last || !course || !attest) {
-    alert('Please complete all required fields and confirm the statement.');
-    return;
-  }
+  const d = dateStr ? new Date(dateStr) : new Date();
+  document.getElementById("today").textContent =
+    d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 
-  document.getElementById('displayName').textContent =
-    [first, middle, last].filter(Boolean).join(' ');
-  document.getElementById('displayCourse').textContent = course;
-
-  const today = new Date();
-  document.getElementById('today').textContent =
-    today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-
-  document.getElementById('certPage').style.display = 'block';
-  document.querySelector('.form-wrap').style.display = 'none';
-  document.getElementById('pdfBar').style.display = 'block';
-
+  document.getElementById("certPage").style.display = "block";
+  document.querySelector(".form-wrap").style.display = "none";
+  document.getElementById("pdfBar").style.display = "block";
   window.scrollTo(0, 0);
 }
 
+function generate() {
+  const first = firstName.value.trim();
+  const middle = middleName.value.trim();
+  const last = lastName.value.trim();
+  const course = course.value;
+  const attest = attest.checked;
+
+  if (!first || !last || !course || !attest) {
+    alert("Complete all fields and confirm.");
+    return;
+  }
+
+  showCertificate([first, middle, last].filter(Boolean).join(" "), course);
+}
+
 function printCert() {
-  const course = document.getElementById('displayCourse').textContent || 'Course';
-  const date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-
-  const safeCourse = course.replace(/[^a-z0-9]/gi, '_');
-
-  document.title = `Certificate_${safeCourse}_${date}`;
-
+  const course = displayCourse.textContent || "Course";
+  const date = new Date().toISOString().slice(0,10);
+  document.title = `Certificate_${course.replace(/[^a-z0-9]/gi,"_")}_${date}`;
   window.print();
+}
+
+/* ---------- URL PARAM MODE ---------- */
+const params = new URLSearchParams(window.location.search);
+if (params.get("fullName") && params.get("courseName")) {
+  showCertificate(
+    params.get("fullName"),
+    params.get("courseName"),
+    params.get("completionDate")
+  );
 }
 </script>
 
