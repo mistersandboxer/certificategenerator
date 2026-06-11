@@ -10,8 +10,6 @@
   html, body {
     margin: 0;
     padding: 0;
-    width: 11in;
-    height: 8.5in;
     background: #f4f6f8;
     font-family: Arial, Helvetica, sans-serif;
   }
@@ -24,7 +22,7 @@
     border: 1px solid #ddd;
   }
 
-  .form-wrap h2 { margin-top: 0; color: #0b5fa5; }
+  .form-wrap h2 { margin-top: 0; color: #00659b; }
 
   label { display: block; margin-top: 14px; font-weight: bold; }
 
@@ -52,7 +50,7 @@
     padding: 10px 24px;
     font-size: 14px;
     font-weight: bold;
-    background: #0b5fa5;
+    background: #00659b;
     color: #fff;
     border: none;
     cursor: pointer;
@@ -63,83 +61,59 @@
   .page {
     width: 11in;
     height: 8.5in;
-    padding: 42px;
-    box-sizing: border-box;
     display: none;
+    position: relative;
+    background: #fff;
   }
 
   .certificate {
-    width: 100%;
-    height: 100%;
-    background: #ffffff;
+    width: 11in;
+    height: 8.5in;
     position: relative;
-    text-align: center;
-    border: 10px solid #0b5fa5;
-    outline: 3px solid #d7e6f7;
-    outline-offset: -22px;
-    padding: 48px 70px;
-    box-sizing: border-box;
+    background-image: url("https://www.theiia.org/globalassets/site/products/blank-cpe-clean.jpg");
+    background-size: 11in 8.5in;
+    background-repeat: no-repeat;
+    background-position: center;
+    overflow: hidden;
   }
 
-  .seal {
+  .cert-text {
     position: absolute;
-    right: 52px;
-    top: 52px;
-    width: 120px;
-    height: 120px;
-    border-radius: 999px;
-    border: 3px solid rgba(11,95,165,0.35);
-    background: rgba(11,95,165,0.06);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transform: rotate(-10deg);
-  }
-
-  .seal span {
-    font-family: Georgia, serif;
-    font-size: 12px;
-    letter-spacing: 2px;
-    color: rgba(11,95,165,0.65);
-    font-weight: bold;
-    text-transform: uppercase;
-    line-height: 1.2;
-  }
-
-  .content {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .title { font-family: Georgia, serif; font-size: 54px; color: #0b5fa5; }
-  .subtitle { font-size: 15px; letter-spacing: 4px; color: #556; margin-bottom: 24px; }
-  .divider { width: 70%; height: 1px; background: #d7e6f7; margin-bottom: 26px; }
-  .name { font-family: Georgia, serif; font-size: 44px; font-weight: bold; margin-bottom: 18px; }
-  .text { font-size: 20px; margin-bottom: 14px; }
-  .course { font-size: 26px; font-weight: bold; margin-bottom: 22px; }
-  .congrats { font-size: 16px; color: #555; max-width: 78%; }
-
-  .footer {
-    position: absolute;
-    bottom: 52px;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #555;
+    text-align: center;
+    color: #222;
   }
 
-  .sigline {
-    width: 320px;
-    height: 1px;
-    background: #c9d9ef;
-    margin: 14px auto 8px auto;
+  .awarded-text {
+    top: 2.78in;
+    font-size: 18px;
   }
 
-  .org { font-weight: bold; color: #0b5fa5; }
+  .name {
+    top: 3.18in;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 34px;
+    font-weight: bold;
+  }
+
+  .completed-text {
+    top: 3.78in;
+    font-size: 18px;
+  }
+
+  .course {
+    top: 4.18in;
+    left: 1.45in;
+    width: 8.1in;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1.25;
+  }
+
+  .date-text {
+    top: 5.05in;
+    font-size: 17px;
+  }
 
   .pdf-bar {
     position: fixed;
@@ -153,16 +127,41 @@
     padding: 12px 20px;
     font-size: 14px;
     font-weight: bold;
-    background: #0b5fa5;
+    background: #00659b;
     color: #fff;
     border: none;
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0,0,0,0.25);
   }
 
+  .pdf-bar .new-btn {
+    margin-left: 10px;
+    background: #28a745;
+  }
+
   @media print {
-    .form-wrap, .pdf-bar { display: none; }
-    .page { display: block; }
+    html, body {
+      width: 11in;
+      height: 8.5in;
+      background: #fff;
+    }
+
+    .form-wrap, .pdf-bar {
+      display: none !important;
+    }
+
+    .page {
+      display: block !important;
+      width: 11in;
+      height: 8.5in;
+      margin: 0;
+      padding: 0;
+    }
+
+    .certificate {
+      width: 11in;
+      height: 8.5in;
+    }
   }
 </style>
 </head>
@@ -202,37 +201,17 @@
 
 <div class="page" id="certPage">
   <div class="certificate">
-    <div class="seal"><span>YOU<br>DID IT!</span></div>
-
-    <div class="content">
-      <div class="title">Certificate of Completion</div>
-      <div class="subtitle">AWARDED TO</div>
-      <div class="divider"></div>
-
-      <div class="name" id="displayName"></div>
-      <div class="text">For successful completion of</div>
-      <div class="course" id="displayCourse"></div>
-      <div class="congrats">In recognition of your dedication to learning.</div>
-    </div>
-
-    <div class="footer">
-      Issued on <span id="today"></span>
-      <div class="sigline"></div>
-      <div class="org">The Institute of Internal Auditors</div>
-    </div>
+    <div class="cert-text awarded-text">This certifies that</div>
+    <div class="cert-text name" id="displayName"></div>
+    <div class="cert-text completed-text">has successfully completed</div>
+    <div class="cert-text course" id="displayCourse"></div>
+    <div class="cert-text date-text">Issued on <span id="today"></span></div>
   </div>
 </div>
 
 <div class="pdf-bar" id="pdfBar">
   <button type="button" onclick="printCert()">Save as PDF</button>
-<button
-  type="button"
-  onclick="resetForm()"
-  style="margin-left:10px;background:#28a745;">
-  New Certificate
-</button>
-    New Certificate
-  </button>
+  <button type="button" onclick="resetForm()" class="new-btn">New Certificate</button>
 </div>
 
 <script>
@@ -274,9 +253,10 @@ function printCert() {
   window.print();
 }
 
-  function resetForm() {
+function resetForm() {
   window.location.href = window.location.pathname;
 }
+
 /* URL param mode: ?fullName=...&courseName=...&completionDate=YYYY-MM-DD */
 (function initFromUrl() {
   const params = new URLSearchParams(window.location.search);
