@@ -70,11 +70,17 @@
     width: 11in;
     height: 8.5in;
     position: relative;
-    background-image: url("https://www.theiia.org/globalassets/site/products/blank-cpe-clean.jpg");
-    background-size: 11in 8.5in;
-    background-repeat: no-repeat;
-    background-position: center;
     overflow: hidden;
+    background: #fff;
+  }
+
+  .cert-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 11in;
+    height: 8.5in;
+    z-index: 0;
   }
 
   .cert-text {
@@ -82,6 +88,7 @@
     width: 100%;
     text-align: center;
     color: #222;
+    z-index: 1;
   }
 
   .awarded-text {
@@ -162,6 +169,11 @@
       width: 11in;
       height: 8.5in;
     }
+
+    .cert-bg {
+      width: 11in;
+      height: 8.5in;
+    }
   }
 </style>
 </head>
@@ -201,6 +213,8 @@
 
 <div class="page" id="certPage">
   <div class="certificate">
+    <img class="cert-bg" src="https://www.theiia.org/globalassets/site/products/blank-cpe-clean.jpg" alt="Certificate background">
+
     <div class="cert-text awarded-text">This certifies that</div>
     <div class="cert-text name" id="displayName"></div>
     <div class="cert-text completed-text">has successfully completed</div>
