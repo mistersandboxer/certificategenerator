@@ -225,6 +225,14 @@
 
 <div class="pdf-bar" id="pdfBar">
   <button type="button" onclick="printCert()">Save as PDF</button>
+<button
+  type="button"
+  onclick="resetForm()"
+  style="margin-left:10px;background:#28a745;">
+  New Certificate
+</button>
+    New Certificate
+  </button>
 </div>
 
 <script>
@@ -266,6 +274,9 @@ function printCert() {
   window.print();
 }
 
+  function resetForm() {
+  window.location.href = window.location.pathname;
+}
 /* URL param mode: ?fullName=...&courseName=...&completionDate=YYYY-MM-DD */
 (function initFromUrl() {
   const params = new URLSearchParams(window.location.search);
