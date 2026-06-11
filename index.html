@@ -28,11 +28,12 @@
 
   label { display: block; margin-top: 14px; font-weight: bold; }
 
-  input, select {
+  input {
     width: 100%;
     padding: 8px;
     font-size: 14px;
     margin-top: 4px;
+    box-sizing: border-box;
   }
 
   .attest { margin-top: 18px; font-size: 14px; }
@@ -181,11 +182,7 @@
   <input id="lastName">
 
   <label>Course</label>
-  <select id="courseSelect">
-    <option value="">Select a course</option>
-    <option>Webinar 1</option>
-    <option>Webinar 2</option>
-  </select>
+  <input id="courseName" placeholder="Enter course name">
 
   <div class="attest">
     <label style="font-weight: normal;">
@@ -249,7 +246,7 @@ function generate() {
   const first = document.getElementById("firstName").value.trim();
   const middle = document.getElementById("middleName").value.trim();
   const last = document.getElementById("lastName").value.trim();
-  const course = document.getElementById("courseSelect").value;
+  const course = document.getElementById("courseName").value.trim();
   const attest = document.getElementById("attestCheck").checked;
 
   if (!first || !last || !course || !attest) {
@@ -263,7 +260,7 @@ function generate() {
 
 function printCert() {
   const course = document.getElementById("displayCourse").textContent || "Course";
-  const date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const date = new Date().toISOString().slice(0, 10);
   const safeCourse = course.replace(/[^a-z0-9]/gi, "_");
   document.title = `Certificate_${safeCourse}_${date}`;
   window.print();
